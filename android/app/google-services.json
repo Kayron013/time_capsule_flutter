@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "565667019164",
+    "project_id": "time-capsule-b9ad2",
+    "storage_bucket": "time-capsule-b9ad2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565667019164:android:92d314ffa658de0316b059",
+        "android_client_info": {
+          "package_name": "com.example.time_capsule_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565667019164-m7fcfa9pdgsbqcs5rkgoil32i8ldbirh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTXf23_8W1eINZXe_UEQFBQm9rfWkUa0o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565667019164-m7fcfa9pdgsbqcs5rkgoil32i8ldbirh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
