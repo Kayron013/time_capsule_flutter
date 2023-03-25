@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -13,7 +12,6 @@ class LoginPage extends StatelessWidget {
     var user = auth.user;
 
     if (user != null) {
-      print('Signed in. UID: ${user.uid}');
       // Can't navigate during build; wait until build finished
       // Causes login page to exist for a bit before navigating
       Future.microtask(() => Navigator.pushReplacementNamed(context, '/home'));
