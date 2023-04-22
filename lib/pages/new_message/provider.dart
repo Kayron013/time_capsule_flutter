@@ -7,8 +7,8 @@ class NewMessageProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  List<String> _recipients = [];
-  List<String> get recipients => _recipients;
+  String _recipient = '';
+  String get recipient => _recipient;
 
   String _content = '';
   String get content => _content;
@@ -16,11 +16,10 @@ class NewMessageProvider extends ChangeNotifier {
   MessageState _state = MessageState.selectRecipients;
   MessageState get state => _state;
 
-  void setRecipients(List<String> recipients) {
-    _recipients = recipients;
+  void setRecipient(String recipient) {
+    _recipient = recipient;
     _state = MessageState.composeMessage;
     notifyListeners();
-    debugPrint('notified listeners after setting recipients');
   }
 
   void setContent(String content) {
@@ -31,15 +30,19 @@ class NewMessageProvider extends ChangeNotifier {
   }
 
   Future<void> _scheduleMessage() async {
-    var message = Message.init(content: content, recipients: recipients);
     if (_auth.currentUser == null) return;
+
+    var ref = _db
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .collection('messages')
+        .doc();
+
+    var message =
+        Message.init(id: ref.id, content: content, recipient: recipient);
+
     try {
-      await _db
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .collection('messages')
-          .doc()
-          .set(message.toJson());
+      await ref.set(message.toJson());
       _state = MessageState.storedSuccess;
       notifyListeners();
     } catch (error) {

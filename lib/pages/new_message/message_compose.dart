@@ -14,7 +14,7 @@ class MessageCompose extends StatelessWidget {
       children: [
         ListTile(
           leading: const Text('To:'),
-          title: Text(data.recipients.join(', ')),
+          title: Text(data.recipient),
         ),
         Form(
           key: _formKey,

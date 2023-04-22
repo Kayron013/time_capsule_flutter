@@ -27,7 +27,8 @@ class RecipientSelect extends StatelessWidget {
                   return null;
                 },
                 onSaved: (value) {
-                  data.setRecipients([value!]);
+                  var number = value!.startsWith('+') ? value : '+1$value';
+                  data.setRecipient(number);
                 },
               ),
             ),

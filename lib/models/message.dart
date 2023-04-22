@@ -1,21 +1,22 @@
 import 'dart:math';
 
-// TODO: storing twilio message info per recipient
 class Message {
+  String id;
   String content;
   DateTime createdAt;
-  bool isDelivered;
-  List<String> recipients;
+  bool isSent;
+  String recipient;
   DateTime scheduledDelivery;
   MessageType type;
   String? twilioMessageSid;
   MessageStatus? twilioMessageStatus;
 
   Message(
-      {required this.content,
+      {required this.id,
+      required this.content,
       required this.createdAt,
-      required this.isDelivered,
-      required this.recipients,
+      required this.isSent,
+      required this.recipient,
       required this.scheduledDelivery,
       required this.type,
       required this.twilioMessageSid,
@@ -23,10 +24,11 @@ class Message {
 
   static Message fromJson(Map json) {
     return Message(
+        id: json['id'],
         content: json['content'],
         createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt']),
-        isDelivered: json['isDelivered'],
-        recipients: json['recipients'],
+        isSent: json['isSent'],
+        recipient: json['recipient'],
         scheduledDelivery:
             DateTime.fromMillisecondsSinceEpoch(json['scheduledDelivery']),
         type: MessageType.values.byName(json['type']),
@@ -38,10 +40,11 @@ class Message {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'content': content,
       'createdAt': createdAt.millisecondsSinceEpoch,
-      'isDelivered': isDelivered,
-      'recipients': recipients,
+      'isSent': isSent,
+      'recipient': recipient,
       'scheduledDelivery': scheduledDelivery.millisecondsSinceEpoch,
       'type': type.name,
       'twilioMessageSid': twilioMessageSid,
@@ -50,17 +53,20 @@ class Message {
   }
 
   static Message init(
-      {required String content, required List<String> recipients}) {
+      {required String id,
+      required String content,
+      required String recipient}) {
     Random gen = Random();
     int range = 24 * 365 * 5; // 5 years in hours
     var scheduledDelivery =
         DateTime.now().add(Duration(hours: gen.nextInt(range) + 1));
 
     return Message(
+        id: id,
         content: content,
         createdAt: DateTime.now(),
-        isDelivered: false,
-        recipients: recipients,
+        isSent: false,
+        recipient: recipient,
         scheduledDelivery: scheduledDelivery,
         type: MessageType.sms,
         twilioMessageSid: null,
