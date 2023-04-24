@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:time_capsule_flutter/constants/routes.dart';
 import 'package:time_capsule_flutter/pages/home.dart';
@@ -6,7 +7,8 @@ import 'package:time_capsule_flutter/pages/login.dart';
 import 'package:time_capsule_flutter/pages/splash.dart';
 import 'package:time_capsule_flutter/providers/auth.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 

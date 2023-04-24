@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_capsule_flutter/pages/new_message/provider.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class RecipientSelect extends StatelessWidget {
   final NewMessageProvider data;
@@ -14,21 +15,13 @@ class RecipientSelect extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: TextFormField(
-                decoration: const InputDecoration(labelText: 'To'),
-                validator: (value) {
-                  debugPrint('value: "$value"');
-                  var usNumberRegexp = RegExp(r'^(\+1)?\d{10}$');
-
-                  if (!usNumberRegexp.hasMatch(value ?? '')) {
-                    return 'Invalid number format';
-                  }
-
-                  return null;
-                },
+              title: IntlPhoneField(
+                decoration: const InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(borderSide: BorderSide())),
+                initialCountryCode: 'US',
                 onSaved: (value) {
-                  var number = value!.startsWith('+') ? value : '+1$value';
-                  data.setRecipient(number);
+                  data.setRecipient(value?.completeNumber ?? '');
                 },
               ),
             ),
