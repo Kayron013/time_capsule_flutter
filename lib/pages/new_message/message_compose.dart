@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:time_capsule_flutter/constants/routes.dart';
 import 'package:time_capsule_flutter/pages/new_message/provider.dart';
 
 class MessageCompose extends StatelessWidget {
@@ -30,15 +31,23 @@ class MessageCompose extends StatelessWidget {
                 }
                 return null;
               },
-              onSaved: (value) {
-                data.setContent(value!);
+              onSaved: (value) async {
+                var isSuccessful = await data.sendContent(value!);
+                if (isSuccessful && context.mounted) {
+                  Navigator.pop(context, true);
+                }
               },
+            ),
+            subtitle: Text(
+              data.errorMessage,
+              style: const TextStyle(color: Colors.red),
             ),
           ),
         ),
         IconButton(
             onPressed: () {
-              if (data.state != MessageState.composeMessage) return;
+              if (data.state != MessageState.composeMessage &&
+                  data.state != MessageState.storedFailure) return;
 
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();

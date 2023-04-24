@@ -29,15 +29,15 @@ class _AddLinkFab extends StatelessWidget {
         // color: Colors.white,
       ),
       onPressed: () async {
-        await Navigator.push(context,
+        bool? isScheduled = await Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NewMessagePage()));
-        // if (linkAdded) {
-        //   if (!context.mounted) return;
-        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //     content: Text('Message has scheduled'),
-        //     backgroundColor: Colors.green,
-        //   ));
-        // }
+
+        if ((isScheduled ?? false) && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Message has been scheduled'),
+            backgroundColor: Colors.green,
+          ));
+        }
       },
     );
   }

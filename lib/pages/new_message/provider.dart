@@ -16,21 +16,25 @@ class NewMessageProvider extends ChangeNotifier {
   MessageState _state = MessageState.selectRecipients;
   MessageState get state => _state;
 
+  String _errorMessage = '';
+  String get errorMessage => _errorMessage;
+
   void setRecipient(String recipient) {
     _recipient = recipient;
     _state = MessageState.composeMessage;
     notifyListeners();
   }
 
-  void setContent(String content) {
+  Future<bool> sendContent(String content) {
     _content = content;
     _state = MessageState.storingMessage;
+    _errorMessage = '';
     notifyListeners();
-    _scheduleMessage();
+    return _scheduleMessage();
   }
 
-  Future<void> _scheduleMessage() async {
-    if (_auth.currentUser == null) return;
+  Future<bool> _scheduleMessage() async {
+    if (_auth.currentUser == null) return false;
 
     var ref = _db
         .collection('users')
@@ -43,11 +47,13 @@ class NewMessageProvider extends ChangeNotifier {
 
     try {
       await ref.set(message.toJson());
-      _state = MessageState.storedSuccess;
-      notifyListeners();
-    } catch (error) {
+      return true;
+    } on FirebaseException catch (error) {
       _state = MessageState.storedFailure;
+      _errorMessage = 'Error storing message';
+      debugPrint(error.toString());
       notifyListeners();
+      return false;
     }
   }
 }
@@ -56,6 +62,5 @@ enum MessageState {
   selectRecipients,
   composeMessage,
   storingMessage,
-  storedSuccess,
   storedFailure
 }

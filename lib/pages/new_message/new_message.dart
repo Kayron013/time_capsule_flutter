@@ -19,10 +19,7 @@ class NewMessagePage extends StatelessWidget {
               return RecipientSelect(
                 data: data,
               );
-            case MessageState.composeMessage:
-            case MessageState.storingMessage:
-            case MessageState.storedSuccess:
-            case MessageState.storedFailure:
+            default:
               return MessageCompose(
                 data: data,
               );
