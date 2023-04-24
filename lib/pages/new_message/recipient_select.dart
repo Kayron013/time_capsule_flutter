@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:time_capsule_flutter/pages/new_message/provider.dart';
-import 'package:time_capsule_flutter/utils/phone_number.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class RecipientSelect extends StatelessWidget {
