@@ -6,6 +6,7 @@ import 'package:time_capsule_flutter/pages/home.dart';
 import 'package:time_capsule_flutter/pages/login.dart';
 import 'package:time_capsule_flutter/pages/splash.dart';
 import 'package:time_capsule_flutter/providers/auth.dart';
+import 'package:time_capsule_flutter/providers/db.dart';
 
 void main() async {
   await dotenv.load();

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_capsule_flutter/pages/new_message/new_message.dart';
+import 'package:time_capsule_flutter/utils/text.dart';
 import 'package:time_capsule_flutter/widgets/app_drawer.dart';
+
+import '../providers/db.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,10 +16,61 @@ class HomePage extends StatelessWidget {
         title: const Text('Time Capsule'),
       ),
       drawer: const AppDrawer(),
-      body: ListView(
-        children: const [Text('You\'re logged in!')],
-      ),
+      body: ListView(children: [
+        const Text('Scheduled'),
+        _UnsentMessages(),
+        const Text('Sent'),
+        _SentMessages()
+      ]),
       floatingActionButton: _AddLinkFab(),
+    );
+  }
+}
+
+class _UnsentMessages extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<MessageProvider>(
+      create: (context) => MessageProvider.recentScheduled(),
+      child: Consumer<MessageProvider>(
+        builder: (context, data, child) {
+          var messages = data.data ?? [];
+          var tiles = messages
+              .map((msg) => ListTile(
+                    visualDensity: VisualDensity.compact,
+                    title: Text(msg.recipient),
+                    subtitle: Text(TextUtil.ellipse(msg.content)),
+                  ))
+              .toList();
+          return Column(
+            children: tiles,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SentMessages extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<MessageProvider>(
+      create: (context) => MessageProvider.recentSent(),
+      child: Consumer<MessageProvider>(
+        builder: (context, data, child) {
+          var messages = data.data ?? [];
+          var tiles = messages
+              .map((msg) => ListTile(
+                    visualDensity: VisualDensity.compact,
+                    title: Text(msg.recipient),
+                    subtitle: Text(TextUtil.ellipse(msg.content)),
+                  ))
+              .toList();
+          return Column(
+            children: tiles,
+          );
+        },
+      ),
     );
   }
 }
